@@ -3,7 +3,7 @@ version: '3'
 services:
 
   wordpress:
-    image: wordpr:latest
+    image: wordpress:latest
     restart: always
     ports:
       - 8080:80
