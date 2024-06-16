@@ -1,16 +1,28 @@
 name: CI/CD Pipeline
+
 on:
   push:
     branches: [ main, CICD_Test ]
   pull_request:
     branches: [ main, CICD_Test ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
 
-    # Chạy các tests
-    - name: Run Tests
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Start Docker services
       run: |
         docker-compose up -d
+
+    - name: Run Tests
+      run: |
+        # Add commands here to run your tests inside Docker containers
+        echo "Running tests..."
+
+    - name: Stop Docker services
+      run: |
+        docker-compose down
