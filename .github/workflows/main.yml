@@ -1,54 +1,28 @@
-# File của Github Actions
 name: CI/CD Pipeline
 
-# Chạy khi có sự kiện push hoặc pull request trên nhánh main hoặc CICD_Test
 on:
   push:
     branches: [ main, CICD_Test ]
   pull_request:
     branches: [ main, CICD_Test ]
 
-# Các job cần thực hiện trên Github Actions
 jobs:
-  # thực hiện build trên Github Actions
   build:
-    # Được chạy trên phiên bản mới nhất của Ubuntu
     runs-on: ubuntu-latest
-    # Các services cần chạy cho job
-    # services:
-    #   # build job sẽ chạy bản mới nhất của mysql từ Docker Hub
-    #   # Docker Hub mysql: https://hub.docker.com/_/mysql
-    #   db:
-    #     image: mysql:latest
-    #     # Cấu hình biến môi trường (enviroment variable) cho mysql
-    #     env:
-    #       MYSQL_ROOT_PASSWORD: password
-    #     # Kiểm tra sức khỏe (health) của mysql
-    #     options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-    # Các tasks cần thực hiện trong job
+
     steps:
-    # Checkout mã nguồn từ repository
-    # Xem thêm tại: https://github.com/actions/checkout
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-    # # Composer cho phép cài đặt các dependencies của project trên Github Actions
-    # - name: Validate Composer files
-    #   uses: docker://composer:1.9.0
-    #   with:
-    #     args: validate
-
-    # # Cài đặt các dependencies của project
-    # # Sử dụng Docker để chạy composer
-    # - name: Install Dependencies
-    #   uses: docker://composer:1.9.0
-    #   with:
-    #     args: install
-
-    # Chạy các tests
-    - name: Run Tests
-    # Trong quá trình khởi tạo website, ta có sử dụng lệnh "docker-compose up" trên Terminal
-    # Nên tương tự trên Github Actions, ta cũng cho chạy các lệnh đó trên Github Actions để kiểm tra
-    # docker-compose up -d để chạy các services trong docker-compose.yml
-    # -d để chạy ở chế độ daemon (background) tránh Github Actions chạy mãi không dừng
+    - name: Start Docker services
       run: |
         docker-compose up -d
+
+    - name: Run Tests
+      run: |
+        # Add commands here to run your tests inside Docker containers
+        echo "Running tests..."
+
+    - name: Stop Docker services
+      run: |
+        docker-compose down
