@@ -30,7 +30,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - nginx:/etc/nginx/conf.d
+      - ./nginx:/etc/nginx/conf.d
       - wordpress:/var/www/html
 
 volumes:
